@@ -19,7 +19,7 @@ Download the requirements.txt file and run it in the terminal.
 1. Run the demo in terminal: `streamlit run app.py`
 2. View the Streamlit app in your browser: `http://localhost:8501`
 
-![demo]()
+![demo](https://github.com/penguinwang96825/Streamlit_for_Toxicity_Classification/blob/master/image/demo.png)
 
 ## © Copyright
 See [License](https://github.com/penguinwang96825/Streamlit-for-Toxicity-Classification/blob/master/LICENSE) for more details.
