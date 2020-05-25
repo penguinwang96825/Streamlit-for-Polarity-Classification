@@ -1,12 +1,6 @@
 import streamlit as st
 import re
 import emoji
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import f1_score
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
 from collections import defaultdict
 import warnings
 warnings.filterwarnings("ignore")
@@ -80,10 +74,10 @@ def analyze_polarity(text, model, tokenizer, class_name):
         return_tensors="pt")
     
     logits = model(encoding["input_ids"].to("cpu"), encoding["attention_mask"].to("cpu"))
-    prediction = logits.to("cpu")
-    prediction = prediction.tolist()[0]
-    prediction = class_name[argmax(prediction)]
-    return prediction
+    logits = logits.to("cpu")
+    logits = logits.tolist()[0]
+    prediction = class_name[argmax(logits)]
+    return logits, prediction
 
 def main():
     seed_everything()
@@ -98,14 +92,16 @@ def main():
     PRE_TRAINED_MODEL_NAME = 'bert-base-japanese-char-whole-word-masking'
     tokenizer = BertJapaneseTokenizer.from_pretrained(PRE_TRAINED_MODEL_NAME)
     class_name = ["Negative", "Positive"]
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = torch.load("best_bert.pkl")
     model.to("cpu")
 
-    message = st.text_input(label="Enter your comment", value="Type here...")
+    message = st.text_input(label="Enter your comment: ", value="Type here...")
     if st.button("Analyze"):
-        data = analyze_polarity(message, model, tokenizer, class_name)
-        st.text(data)
+        logits, prediction = analyze_polarity(message, model, tokenizer, class_name)
+        pos = "Positive: {}".format(round(logits[1], 4))
+        neg = "Negative: {}".format(round(logits[0], 4))
+        st.text(pos)
+        st.text(neg)
 
 if __name__ == "__main__":
     main()
