@@ -48,7 +48,7 @@ def clean_text(text):
 def argmax(lst):
     return max(range(len(lst)), key=lst.__getitem__)
 
-class SentimentClassifier(nn.Module):
+class KKBOXSentimentClassifier(nn.Module):
     def __init__(self, n_classes):
         super(SentimentClassifier, self).__init__()
         self.bert_layer = BertModel.from_pretrained(PRE_TRAINED_MODEL_NAME)
@@ -89,17 +89,22 @@ def main():
     text classification.
     ''')
 
-    PRE_TRAINED_MODEL_NAME = 'bert-base-japanese-char-whole-word-masking'
+    PRE_TRAINED_MODEL_NAME = 'bert-base-japanese'
     tokenizer = BertJapaneseTokenizer.from_pretrained(PRE_TRAINED_MODEL_NAME)
     class_name = ["Negative", "Positive"]
-    model = torch.load("best_bert.pkl")
+    model = torch.load("best_bert_japanese.pkl")
     model.to("cpu")
 
     message = st.text_input(label="Enter your comment: ", value="Type here...")
     if st.button("Analyze"):
+        message = clean_text(message)
         logits, prediction = analyze_polarity(message, model, tokenizer, class_name)
         pos = "Positive: {}".format(round(logits[1], 4))
         neg = "Negative: {}".format(round(logits[0], 4))
+        tokenized_text = tokenizer.tokenize(message)
+        st.markdown("**Tokenized text: **")
+        st.markdown(" ".join(tokenized_text))
+        st.markdown("**Prediction: **")
         st.text(pos)
         st.text(neg)
 
