@@ -1,5 +1,5 @@
 # Streamlit for Toxicity Classification
-This is a demo illustrating a classification model, and I trained the simple BERT model ("bert-base-uncased") on a [Jigsaw Unintended Bias in Toxicity Classification](https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification) dataset. I did not train the BERT model with the whole dataset, instead, I used 1 persent only as this is not my main goal anyway. To put it succinctly, this BERT model can detect toxicity across a diverse range of conversations.
+This is a demo illustrating a classification model using BERT on Google Play dataset. I did not train the BERT model with every apps' reviews on Google Play, instead, I used only a few apps' reviews to train on the model anyway. To put it succinctly, this BERT model can detect polarity across a diverse range of Japanese reviews.
 
 ## Step 1: Download Repository
 Download repository:
